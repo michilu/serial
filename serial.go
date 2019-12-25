@@ -54,6 +54,8 @@ type Port interface {
 	io.ReadWriteCloser
 	// Connect connects to the serial port.
 	Open(*Config) error
+	// Flush flushes buffer of the serial port.
+	Flush() error
 }
 
 // Open opens a serial port.

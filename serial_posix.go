@@ -10,6 +10,8 @@ import (
 	"syscall"
 	"time"
 	"unsafe"
+
+	"github.com/pkg/term/termios"
 )
 
 // port implements Port interface.
@@ -118,6 +120,11 @@ func (p *port) Read(b []byte) (n int, err error) {
 func (p *port) Write(b []byte) (n int, err error) {
 	n, err = syscall.Write(p.fd, b)
 	return
+}
+
+// Flush flushes both data received but not read, and data written but not transmitted.
+func (p *port) Flush() error {
+	return termios.Tcflush(uintptr(p.fd), termios.TCIOFLUSH)
 }
 
 func (p *port) setTermios(termios *syscall.Termios) (err error) {
